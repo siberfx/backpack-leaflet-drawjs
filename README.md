@@ -5,10 +5,8 @@
 <p align="center">
  <img src="https://raw.githubusercontent.com/siberfx/backpack-leaflet-drawjs/refs/heads/main/img/preview.png">
 </p>
-
-<img alt="Stars" src="https://img.shields.io/github/stars/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/> 
-<img alt="Forks" src="https://img.shields.io/github/forks/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/>
-
+<img alt="Stars" src="https://img.shields.io/github/stars/siberfx/leaflet-drawjs?style=plastic&labelColor=343b41"/> <img alt="Forks" src="https://img.shields.io/github/forks/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/>
+ [![Latest Version on Packagist](https://img.shields.io/packagist/dt/siberfx/backpack-leaflet-drawjs?style=plastic)](https://packagist.org/packages/siberfx/backpack-leaflet-drawjs)
 ## Installation
 
 You can install the package via composer:
