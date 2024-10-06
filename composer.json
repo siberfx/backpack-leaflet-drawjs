@@ -1,0 +1,47 @@
+{
+    "name": "siberfx/backpack-leaflet-drawjs",
+    "description": "LeafletDrawjs for Laravel Backpack ^6.x",
+    "keywords": [
+        "laravel 9.x",
+        "laravel 10.x",
+        "laravel 11.x",
+        "backpack",
+        "leaflet-drawjs",
+        "leaflet-polygon",
+        "leaflet polygon json",
+        "leafjs",
+        "openstreetmaps",
+        "mapbox"
+    ],
+    "homepage": "https://github.com/siberfx/backpack-leaflet-drawjs",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Selim Görmüş",
+            "email": "info@siberfx.com",
+            "role": "Fullstack Software Engineer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "backpack/crud": "^6.0",
+        "illuminate/support": "^9.0|^10.0|^11.0"
+    },
+  "minimum-stability": "dev",
+  "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+              "Siberfx\\LeafletDrawjs\\LeafLetServiceProvider"
+            ]
+        }
+    },
+  "autoload": {
+    "psr-4": {
+      "Siberfx\\LeafletDrawjs\\": "src"
+    }
+  }
+}
