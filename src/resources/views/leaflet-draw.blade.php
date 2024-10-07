@@ -12,8 +12,8 @@
 
     $routeIs = $field['ajax-route']; // route('store-polygon');
 
-    $latMarker = '53.8965741';
-    $lngMarker = '27.547158';
+    $latMarker = 53.8965741;
+    $lngMarker = 27.547158;
 
 @endphp
 
@@ -32,13 +32,11 @@
 @include('crud::fields.inc.wrapper_end')
 
 @push('crud_fields_styles')
-    @loadOnce('leaflet_draw_styles')
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Leaflet Draw CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
 
-
+    @basset('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css')
+    @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css')
+    @bassetBlock('siberfx/fields/basset-draw-field.css')
     <style>
         #{{ $mapId }}
         {
@@ -67,21 +65,20 @@
             z-index: 99999;
         }
     </style>
-    @endLoadOnce
+    @endBassetBlock
 @endpush
 
 @push('crud_fields_scripts')
 
-    @loadOnce('leaflet_draw_scripts')
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    @basset('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js')
+    @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js')
+    @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js')
 
-    <!-- Leaflet Draw JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-
+    @bassetBlock('siberfx/fields/basset-draw-field.js')
     <script>
         let mapId = '{{ $mapId }}',
-            defaultZoom = {{ $zoomLevel }},
+            defaultZoom = '{{ $zoomLevel }}',
             defaultLng = '{{ $lngMarker }}',
             defaultLat = '{{ $latMarker }}',
             url = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
@@ -90,23 +87,23 @@
             scrollWheelZoom: false
         }).setView([defaultLng, defaultLat], defaultZoom);
 
+        let results = new L.LayerGroup().addTo(map);
+
         L.tileLayer(url, {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox/streets-v11',
             tileSize: 512,
             zoomOffset: -1,
-            accessToken: '{{config('siberfx.leaflet-draw.mapbox.access_token', null)}}'
+            accessToken: '{{config('backpack.leaflet-draw.mapbox.access_token', null)}}'
         }).addTo(map);
 
-        var searchControl = new L.esri.Controls.Geosearch().addTo(map);
+        let searchControl = new L.esri.Controls.Geosearch().addTo(map);
 
         searchControl.on('results', function(data) {
             results.clearLayers();
             for (var i = data.results.length - 1; i >= 0; i--) {
                 results.addLayer(L.marker(data.results[i].latlng));
-
-                setHiddenFields(data.results[i].latlng.lat, data.results[i].latlng.lng)
             }
         });
 
