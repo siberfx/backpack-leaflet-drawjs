@@ -1,8 +1,8 @@
 @php
-    $current_value = old_empty_or_null($field['name'], '') ?? $field['default'] ?? '';
+    $value = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
 
     $mapProvider = $field['options']['provider'] ?? 'mapbox';
-    $zoomLevel = 14;
+    $zoomLevel = 12;
 
     $mapId = $field['name'];
 
@@ -10,10 +10,8 @@
 
     $entryInstance = null;
 
-    $routeIs = $field['ajax-route']; // route('store-polygon');
+    [$lngMarker, $latMarker] = [30.7028187, 36.9667757];
 
-    $latMarker = 53.8965741;
-    $lngMarker = 27.547158;
 
 @endphp
 
@@ -23,6 +21,7 @@
 <div class="mapfield">
     <div id="{{ $mapId }}"></div>
     <div class='pointer'></div>
+    <input type="hidden" name="coordinates" id="polygonInput">
 
     {{-- HINT --}}
     @if (isset($field['hint']))
@@ -69,7 +68,6 @@
 @endpush
 
 @push('crud_fields_scripts')
-
     @basset('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js')
     @basset('https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js')
     @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js')
@@ -77,86 +75,90 @@
 
     @bassetBlock('backpack/fields/basset-draw-field.js')
     <script>
-        let mapId = '{{ $mapId }}',
+        let polygonData = @json($value),  // Assuming $polygon is the GeoJSON stored data
+            mapId = '{{ $mapId }}',
             defaultZoom = '{{ $zoomLevel }}',
-            defaultLng = '{{ $lngMarker }}',
             defaultLat = '{{ $latMarker }}',
+            defaultLng = '{{ $lngMarker }}',
             url = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
 
         let map = L.map(mapId, {
             scrollWheelZoom: false
-        }).setView([defaultLng, defaultLat], defaultZoom);
+        }).setView([defaultLat, defaultLng], defaultZoom);
 
-        let results = new L.LayerGroup().addTo(map);
-
+        // Add tile layer from Mapbox
         L.tileLayer(url, {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox/streets-v11',
             tileSize: 512,
             zoomOffset: -1,
-            accessToken: '{{config('backpack.leaflet-draw.mapbox.access_token', null)}}'
+            accessToken: '{{ config('backpack.leaflet-draw.mapbox.access_token', null) }}'
         }).addTo(map);
 
-        let searchControl = new L.esri.Controls.Geosearch().addTo(map);
+        // Retrieve polygon data from your database (passed from backend as JSON)
 
-        searchControl.on('results', function(data) {
-            results.clearLayers();
-            for (var i = data.results.length - 1; i >= 0; i--) {
-                results.addLayer(L.marker(data.results[i].latlng));
-            }
-        });
+        // Parse and add the polygon to the map (FLIP the coordinates)
+        if (polygonData && polygonData.geometry && polygonData.geometry.type === "Polygon") {
+            let coordinates = polygonData.geometry.coordinates[0].map(coord => [coord[1], coord[0]]);  // Flip coordinates to [lat, lng]
 
-        // Initialize the Leaflet Draw feature
-        var drawnItems = new L.FeatureGroup();
+            // Create polygon and add it to the map
+            let polygonLayer = L.polygon(coordinates).addTo(map);
+
+            document.getElementById('polygonInput').value = JSON.stringify(polygonData);
+
+            // Automatically adjust the map view to fit the polygon
+            map.fitBounds(polygonLayer.getBounds());
+        }
+
+        // Initialize Leaflet Draw for manual polygon drawing
+        let drawnItems = new L.FeatureGroup();
         map.addLayer(drawnItems);
 
         var drawControl = new L.Control.Draw({
             edit: {
-                featureGroup: drawnItems
+                featureGroup: drawnItems, // Use the drawnItems group for editing
+                remove: true // Enable deletion
             },
             draw: {
                 polygon: true,
-                marker: false,  // disable other shapes
+                marker: false,
                 circle: false,
                 rectangle: false,
                 polyline: false
             }
         });
-
         map.addControl(drawControl);
 
-        // Handle the 'draw:created' event
+        // Handle the 'draw:created' event for drawing new polygons
         map.on('draw:created', function (e) {
             var type = e.layerType;
             var layer = e.layer;
 
             if (type === 'polygon') {
-                var polygonData = layer.toGeoJSON(); // Convert drawn polygon to GeoJSON
-                console.log(JSON.stringify(polygonData));
+                var polygonData = layer.toGeoJSON();  // Convert drawn polygon to GeoJSON
+                console.log(JSON.stringify(polygonData));  // Log GeoJSON to console (you can send it to the server)
 
                 // Optionally, add the drawn polygon to the map
                 drawnItems.addLayer(layer);
 
-                // Send polygon data to the server
-                fetch('{{ $routeIs }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'  // For Laravel CSRF protection
-                    },
-                    body: JSON.stringify({
-                        polygon: polygonData
-                    })
-                }).then(response => response.json())
-                    .then(data => {
-                        alert("Polygon stored!");
-                    }).catch(error => {
-                    console.error('Error:', error);
-                });
+                // Store polygon data into a hidden input to submit to backend
+                document.getElementById('polygonInput').value = JSON.stringify(polygonData);
             }
         });
-    </script>
-    @endLoadOnce
 
+        // Handle 'draw:edited' event
+        map.on('draw:edited', function (e) {
+            e.layers.eachLayer(function (layer) {
+                var polygonData = layer.toGeoJSON();
+                document.getElementById('polygonInput').value = JSON.stringify(polygonData);  // Update the hidden input with new polygon data
+            });
+        });
+
+        // Handle 'draw:deleted' event
+        map.on('draw:deleted', function (e) {
+            document.getElementById('polygonInput').value = '';  // Clear the hidden input when the polygon is deleted
+        });
+    </script>
+    @endBassetBlock
 @endpush
