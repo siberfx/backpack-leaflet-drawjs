@@ -117,7 +117,6 @@ or add in your Crud controller manually where you want to see it as shown below.
         'label' => 'Location',
         'name' => 'location',
         'type' => 'leaflet-draw',
-        'route' => route('store-polygon'), // as you desire
         'options' => [
             'provider' => 'mapbox',
             'marker_image' => null
