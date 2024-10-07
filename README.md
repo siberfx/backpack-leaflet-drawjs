@@ -31,7 +31,7 @@ return [
 ### Publish files
 
 ``` bash
-php artisan vendor:publish --provider="Backpack\LeafletDrawjs\LeafLetServiceProvider" --tag="all" 
+php artisan vendor:publish --provider="Backpack\LeafletDrawjs\LeafLetDrawServiceProvider" --tag="all" 
 ```
 
 
