@@ -21,7 +21,7 @@
 <div class="mapfield">
     <div id="{{ $mapId }}"></div>
     <div class='pointer'></div>
-    <input type="hidden" name="coordinates" id="polygonInput">
+    <input type="hidden" name="{{ mapId }}" id="polygonInput">
 
     {{-- HINT --}}
     @if (isset($field['hint']))
