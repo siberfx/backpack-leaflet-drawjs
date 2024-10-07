@@ -36,7 +36,7 @@
     @basset('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css')
     @basset('https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css')
     @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css')
-    @bassetBlock('siberfx/fields/basset-draw-field.css')
+    @bassetBlock('backpack/fields/basset-draw-field.css')
     <style>
         #{{ $mapId }}
         {
@@ -75,7 +75,7 @@
     @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js')
     @basset('https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js')
 
-    @bassetBlock('siberfx/fields/basset-draw-field.js')
+    @bassetBlock('backpack/fields/basset-draw-field.js')
     <script>
         let mapId = '{{ $mapId }}',
             defaultZoom = '{{ $zoomLevel }}',
