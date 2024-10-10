@@ -5,8 +5,7 @@
 <p align="center">
  <img src="https://raw.githubusercontent.com/siberfx/backpack-leaflet-drawjs/refs/heads/main/img/preview.png">
 </p>
-<img alt="Stars" src="https://img.shields.io/github/stars/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/> <img alt="Forks" src="https://img.shields.io/github/forks/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/>
- [![Latest Version on Packagist](https://img.shields.io/packagist/dt/siberfx/backpack-leaflet-drawjs?style=plastic)](https://packagist.org/packages/siberfx/backpack-leaflet-drawjs)
+<img alt="Stars" src="https://img.shields.io/github/stars/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/> <img alt="Forks" src="https://img.shields.io/github/forks/siberfx/backpack-leaflet-drawjs?style=plastic&labelColor=343b41"/> [![Latest Version on Packagist](https://img.shields.io/packagist/dt/siberfx/backpack-leaflet-drawjs?style=plastic)](https://packagist.org/packages/siberfx/backpack-leaflet-drawjs)
 ## Installation
 
 You can install the package via composer:
@@ -27,6 +26,26 @@ return [
 ];
 
 ```
+
+backpack usage example
+```php
+ CRUD::addField([
+            'name' => 'coordinates',
+            'label' => 'Poligon coordinates',
+            'type' => 'leaflet-draw',
+            'options' => [
+                'provider' => 'mapbox',
+                'marker_image' => null
+            ],
+
+        ]);
+```
+
+the stored data structure example;
+```json
+{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[30.59967, 36.832371], [30.617523, 36.899391], [30.669708, 36.904882], [30.702667, 36.91696], [30.768585, 36.910372], [30.809784, 36.878522], [30.838623, 36.853252], [30.775452, 36.848857], [30.730133, 36.856549], [30.697174, 36.878522], [30.662842, 36.885113], [30.59967, 36.832371]]]}, "properties": []}
+
+``` 
 
 ### Publish files
 
