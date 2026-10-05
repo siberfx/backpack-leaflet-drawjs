@@ -1,16 +1,18 @@
 {
     "name": "siberfx/backpack-leaflet-drawjs",
-    "description": "LeafletDrawjs for Laravel Backpack ^6.x",
+    "description": "Leaflet Draw polygon field (GeoJSON) for Laravel Backpack 7.x",
     "keywords": [
-        "laravel 9.x",
-        "laravel 10.x",
-        "laravel 11.x",
+        "laravel",
+        "laravel 12",
+        "laravel 13",
         "backpack",
-        "leaflet-drawjs",
+        "backpack 7",
+        "backpack field",
+        "leaflet",
+        "leaflet-draw",
         "leaflet-polygon",
-        "leaflet polygon json",
-        "leafjs",
-        "openstreetmaps",
+        "geojson",
+        "openstreetmap",
         "mapbox"
     ],
     "homepage": "https://github.com/siberfx/backpack-leaflet-drawjs",
@@ -24,24 +26,25 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        "backpack/crud": "^6.0",
-        "illuminate/support": "^9.0|^10.0|^11.0"
+        "php": "^8.2",
+        "backpack/crud": "^7.0",
+        "illuminate/support": "^12.0|^13.0"
     },
-  "minimum-stability": "dev",
-  "config": {
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
         "sort-packages": true
     },
     "extra": {
         "laravel": {
             "providers": [
-              "Siberfx\\LeafletDrawjs\\LeafLetServiceProvider"
+                "Siberfx\\LeafletDrawjs\\LeafletDrawServiceProvider"
             ]
         }
     },
-  "autoload": {
-    "psr-4": {
-      "Siberfx\\LeafletDrawjs\\": "src"
+    "autoload": {
+        "psr-4": {
+            "Siberfx\\LeafletDrawjs\\": "src"
+        }
     }
-  }
 }
