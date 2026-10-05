@@ -5,6 +5,7 @@
 </p>
 
 <p align="center">
+    <a href="https://github.com/siberfx/backpack-leaflet-drawjs/actions/workflows/tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/siberfx/backpack-leaflet-drawjs/tests.yml?branch=main&label=tests&style=flat-square&labelColor=343b41"></a>
     <a href="https://packagist.org/packages/siberfx/backpack-leaflet-drawjs"><img alt="Latest Version" src="https://img.shields.io/packagist/v/siberfx/backpack-leaflet-drawjs?style=flat-square&labelColor=343b41"></a>
     <a href="https://packagist.org/packages/siberfx/backpack-leaflet-drawjs"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/siberfx/backpack-leaflet-drawjs?style=flat-square&labelColor=343b41"></a>
     <a href="https://packagist.org/packages/siberfx/backpack-leaflet-drawjs"><img alt="PHP Version" src="https://img.shields.io/packagist/dependency-v/siberfx/backpack-leaflet-drawjs/php?style=flat-square&labelColor=343b41&color=777bb4"></a>
@@ -174,6 +175,20 @@ Use `--tag="all"` to publish both.
 - You now need Backpack 7.x, Laravel 12 or 13, and PHP 8.2 or newer.
 - You no longer need to publish the view. If you published it before, delete `resources/views/vendor/backpack/crud/fields/leaflet-draw.blade.php` to pick up the new version.
 - The config file is now optional. If you published one, the `mapbox.access_token` key works as before.
+
+## Testing
+
+The PHP suite boots a real Backpack 7 app (Tabler theme) with Orchestra Testbench. It renders the create and edit pages and saves polygons through Backpack. The JavaScript suite runs the field script against real Leaflet and Leaflet.draw in jsdom.
+
+```bash
+composer install
+composer test
+
+npm install
+npm test
+```
+
+GitHub Actions runs both suites on every push and pull request: PHP 8.2 to 8.5 on Laravel 12, and PHP 8.3 to 8.5 on Laravel 13.
 
 ## Changelog
 

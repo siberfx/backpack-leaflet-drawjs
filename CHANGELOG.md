@@ -2,6 +2,14 @@
 
 All notable changes to `siberfx/backpack-leaflet-drawjs` are documented in this file.
 
+## Unreleased
+
+### Added
+- PHPUnit suite on Orchestra Testbench: provider and config, field rendering (create, edit, old input, provider and option handling, asset loading) and saving through Backpack.
+- JavaScript suite (node:test + jsdom) for the field script: map init, tile providers, loading stored GeoJSON, draw, edit and delete, single and multiple modes, several fields on one page.
+- GitHub Actions workflow: PHP 8.2 to 8.5 with Laravel 12 and 13, plus the JavaScript suite.
+- `.gitattributes` keeps tests and tooling out of the Composer dist archive.
+
 ## 2.0.0 - 2026-10-05
 
 ### Breaking

@@ -30,6 +30,11 @@
         "backpack/crud": "^7.0",
         "illuminate/support": "^12.0|^13.0"
     },
+    "require-dev": {
+        "backpack/theme-tabler": "^2.0",
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^11.5|^12.0|^13.0"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
@@ -46,5 +51,13 @@
         "psr-4": {
             "Siberfx\\LeafletDrawjs\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Siberfx\\LeafletDrawjs\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
