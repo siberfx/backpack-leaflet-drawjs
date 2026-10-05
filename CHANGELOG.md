@@ -2,7 +2,7 @@
 
 All notable changes to `siberfx/backpack-leaflet-drawjs` are documented in this file.
 
-## Unreleased
+## 2.1.0 - 2026-10-05
 
 ### Added
 - PHPUnit suite on Orchestra Testbench: provider and config, field rendering (create, edit, old input, provider and option handling, asset loading) and saving through Backpack.
